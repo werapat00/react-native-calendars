@@ -163,6 +163,8 @@ class Calendar extends Component {
     } else {
       const DayComp = this.getDayComponent();
       const date = day.getDate();
+      let currentDay = day.getDay();
+      var isWeekend = (currentDay == 6) || (currentDay == 0);
       dayComp = (
         <DayComp
           key={id}
@@ -170,6 +172,7 @@ class Calendar extends Component {
           theme={this.props.theme}
           onPress={this.pressDay}
           date={xdateToData(day)}
+          weekend={isWeekend}
           marking={this.getDateMarking(day)}
         >
           {date}
@@ -250,6 +253,7 @@ class Calendar extends Component {
           renderArrow={this.props.renderArrow}
           monthFormat={this.props.monthFormat}
           hideDayNames={this.props.hideDayNames}
+          hideHeader={this.props.hideHeader}
           weekNumbers={this.props.showWeekNumbers}
           onPressArrowLeft={this.props.onPressArrowLeft}
           onPressArrowRight={this.props.onPressArrowRight}
