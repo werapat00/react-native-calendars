@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import {
   TouchableOpacity,
   Text,
@@ -20,17 +20,17 @@ class Day extends Component {
     date: PropTypes.object
   };
 
-  constructor(props) {
+  constructor (props) {
     super(props);
     this.style = styleConstructor(props.theme);
     this.onDayPress = this.onDayPress.bind(this);
   }
 
-  onDayPress() {
+  onDayPress () {
     this.props.onPress(this.props.date);
   }
 
-  shouldComponentUpdate(nextProps) {
+  shouldComponentUpdate (nextProps) {
     const changed = ['state', 'children', 'marking', 'onPress'].reduce((prev, next) => {
       if (prev) {
         return prev;
@@ -58,7 +58,7 @@ class Day extends Component {
     }
   }
 
-  render() {
+  render () {
     const containerStyle = [this.style.base];
     const textStyle = [this.style.text];
     const dotStyle = [this.style.dot];
@@ -74,15 +74,17 @@ class Day extends Component {
     if (marking.marked) {
       dotStyle.push(this.style.visibleDot);
       if (marking.dotColor) {
-        dotStyle.push({backgroundColor: marking.dotColor});
+        dotStyle.push({ backgroundColor: marking.dotColor });
       }
       dot = (<View style={dotStyle}/>);
     }
-
+    if (this.props.weekend) {
+      textStyle.push({ color: '#f1592a' });
+    }
     if (marking.selected) {
       containerStyle.push(this.style.selected);
       if (marking.selectedColor) {
-        containerStyle.push({backgroundColor: marking.selectedColor});
+        containerStyle.push({ backgroundColor: marking.selectedColor });
       }
       dotStyle.push(this.style.selectedDot);
       textStyle.push(this.style.selectedText);
@@ -94,12 +96,13 @@ class Day extends Component {
 
     return (
       <TouchableOpacity
-        style={containerStyle}
+        style={[this.props.state === 'today' && this.style.today, containerStyle]}
         onPress={this.onDayPress}
         activeOpacity={marking.activeOpacity}
         disabled={marking.disableTouchEvent}
       >
-        <Text allowFontScaling={false} style={[textStyle,this.props.weekend && {color:'#f1592a'}]}>{String(this.props.children)}</Text>
+        <Text allowFontScaling={false}
+              style={textStyle}>{String(this.props.children)}</Text>
         {dot}
       </TouchableOpacity>
     );
